@@ -4,7 +4,6 @@ package com.esther.payment_system.controller;
 import com.esther.payment_system.entity.Payment;
 import com.esther.payment_system.service.contract.PaymentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,24 +17,20 @@ public class PaymentController {
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<Payment> createPayment (@RequestBody Payment payment){
-        Payment createdPayment = paymentService.createPayment(payment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPayment);
+    public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
+        Payment created = paymentService.createPayment(payment);
+        return ResponseEntity.ok(created);
     }
 
-    @PatchMapping("/{paymentId}")
-    public ResponseEntity<Payment> updatePaymentStatus(
-            @PathVariable Long paymentId,
-            @RequestParam String status
-    ){
-        Payment updatedPayment = paymentService.updatePaymentStatus(paymentId, status);
-        return ResponseEntity.ok(updatedPayment);
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Payment> updateStatus(@PathVariable Long id, @RequestParam String status) {
+        Payment updated = paymentService.updatePaymentStatus(id, status);
+        return ResponseEntity.ok(updated);
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Payment>> getPaymentsByCustomerID(@PathVariable Long customerId){
-        List<Payment> payments = paymentService.getPaymentsByCustomerId(customerId);
-        return ResponseEntity.ok(payments);
+    public ResponseEntity<List<Payment>> getByCustomer(@PathVariable Long customerId) {
+        return ResponseEntity.ok(paymentService.getPaymentsByCustomerId(customerId));
     }
 
 
