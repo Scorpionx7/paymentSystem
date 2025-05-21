@@ -8,6 +8,6 @@ public interface PaymentService {
 
     Payment createPayment (Payment payment);
     Payment updatePaymentStatus(Long paymentId, String status);
-    List<Payment> getPaymentsByCustomerId(String customerId);
+    List<Payment> getPaymentsByCustomerId(Long customerId);
 
 }

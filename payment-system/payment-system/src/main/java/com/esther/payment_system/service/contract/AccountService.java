@@ -1,7 +1,8 @@
 package com.esther.payment_system.service.contract;
 
-public interface AccountService {
+import java.math.BigDecimal;
 
-    void updateBalance(String customerId, Double amount);
-    Double getBalance(String customerId);
+public interface AccountService {
+    void updateBalance(Long customerId, BigDecimal amount);
+    BigDecimal getBalance(Long customerId);
 }

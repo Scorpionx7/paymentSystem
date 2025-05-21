@@ -33,7 +33,7 @@ public class PaymentController {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Payment>> getPaymentsByCustomerID(@PathVariable String customerId){
+    public ResponseEntity<List<Payment>> getPaymentsByCustomerID(@PathVariable Long customerId){
         List<Payment> payments = paymentService.getPaymentsByCustomerId(customerId);
         return ResponseEntity.ok(payments);
     }
