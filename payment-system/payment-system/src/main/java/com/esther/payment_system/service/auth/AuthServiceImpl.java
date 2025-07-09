@@ -7,6 +7,7 @@ import com.esther.payment_system.dto.RegistrationRequest;
 import com.esther.payment_system.entity.Account;
 import com.esther.payment_system.entity.Customer;
 import com.esther.payment_system.entity.User;
+import com.esther.payment_system.entity.enums.Role;
 import com.esther.payment_system.repository.AccountRepository;
 import com.esther.payment_system.repository.CustomerRepository;
 import com.esther.payment_system.repository.UserRepository;
@@ -43,6 +44,7 @@ public class AuthServiceImpl implements AuthService {
         User user = User.builder()
                 .username(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
                 .build();
         userRepository.save(user);
 

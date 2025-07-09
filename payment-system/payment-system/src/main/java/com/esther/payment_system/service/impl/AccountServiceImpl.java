@@ -41,7 +41,7 @@ public class AccountServiceImpl implements AccountService {
         return getAccountByCustomerId(customerId).getBalance();
     }
 
-    // Método auxiliar para evitar repetição de código
+    // Metodo auxiliar para evitar repetição de código
     private Account getAccountByCustomerId(Long customerId) {
         return accountRepository.findByCustomer_Id(customerId)
                 .orElseThrow(() -> new AccountNotFoundException("Conta não encontrada para o cliente: " + customerId));

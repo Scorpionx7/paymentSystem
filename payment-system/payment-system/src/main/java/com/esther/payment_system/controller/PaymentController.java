@@ -8,6 +8,7 @@ import com.esther.payment_system.service.contract.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +28,8 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}/status")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<Payment> updateStatus(@PathVariable Long id, @RequestParam String status) {
-        // ATENÇÃO: Este endpoint ainda é inseguro. Um admin deveria fazer isso.
-        // Por enquanto, vamos deixá-lo, mas cientes do risco.
         Payment updated = paymentService.updatePaymentStatus(id, status);
         return ResponseEntity.ok(updated);
     }

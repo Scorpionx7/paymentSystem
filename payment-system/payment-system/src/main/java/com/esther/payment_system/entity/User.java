@@ -1,15 +1,18 @@
 package com.esther.payment_system.entity;
 
+import com.esther.payment_system.entity.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -32,12 +35,16 @@ public class User implements UserDetails {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Customer customer;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
+
     // --- Implementação dos métodos do UserDetails ---
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Por enquanto, não vamos nos preocupar com papéis (Roles)
-        return Collections.emptyList();
+        // Informa ao Spring Security qual é o papel (autoridade) deste usuário
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
