@@ -1,36 +1,42 @@
 package com.esther.payment_system.controller;
 
 
+import com.esther.payment_system.dto.PaymentRequest;
 import com.esther.payment_system.entity.Payment;
+import com.esther.payment_system.entity.User;
 import com.esther.payment_system.service.contract.PaymentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/payments")
+@RequestMapping("/api/payments")
 @RequiredArgsConstructor
 public class PaymentController {
 
     private final PaymentService paymentService;
 
     @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
-        Payment created = paymentService.createPayment(payment);
+    public ResponseEntity<Payment> createPayment(@Valid @RequestBody PaymentRequest request, @AuthenticationPrincipal User user) {
+        Payment created = paymentService.createPayment(request, user.getCustomer());
         return ResponseEntity.ok(created);
     }
 
     @PutMapping("/{id}/status")
     public ResponseEntity<Payment> updateStatus(@PathVariable Long id, @RequestParam String status) {
+        // ATENÇÃO: Este endpoint ainda é inseguro. Um admin deveria fazer isso.
+        // Por enquanto, vamos deixá-lo, mas cientes do risco.
         Payment updated = paymentService.updatePaymentStatus(id, status);
         return ResponseEntity.ok(updated);
     }
 
-    @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Payment>> getByCustomer(@PathVariable Long customerId) {
-        return ResponseEntity.ok(paymentService.getPaymentsByCustomerId(customerId));
+    @GetMapping
+    public ResponseEntity<List<Payment>> getMyPayments(@AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(paymentService.getPaymentsByCustomerId(user.getCustomer().getId()));
     }
 
 
