@@ -30,8 +30,12 @@ public class NotificationServiceImpl implements NotificationService {
     private String routingKey;
 
     @Override
-    public void sendNotification(Long customerId, String message) {
-        NotificationMessage payload = new NotificationMessage(customerId, message);
+    public void sendNotification(Long customerId, Long paymentId, String message) {
+        NotificationMessage payload = NotificationMessage.builder()
+                .customerId(customerId)
+                .paymentId(paymentId)
+                .message(message)
+                .build();
         rabbitTemplate.convertAndSend(exchange, routingKey, payload);
         System.out.println("Notificação publicada na fila para o cliente: " + message);
     }

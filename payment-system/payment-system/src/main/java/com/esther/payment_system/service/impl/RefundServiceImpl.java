@@ -59,6 +59,7 @@ public class RefundServiceImpl implements RefundService {
         // Notifica cliente
         notificationService.sendNotification(
                 payment.getCustomer().getId(),
+                payment.getId(), // Passar o ID do pagamento
                 "Seu pagamento no valor de " + amount + " foi reembolsado."
         );
 
